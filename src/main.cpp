@@ -1,5 +1,7 @@
 /// Project entry point
 #include <iostream>
+
+#include "board.h"
 #include "game.h"
 #include "../test/test.h"
 
@@ -13,7 +15,7 @@ int main(int argc, const char* argv[])
     {
         std::cout << "Test superados." << std::endl;
     }
-
+    return 0;
     // The following code runs the graphic part
     Game game;
     // Run until ESC is pressed

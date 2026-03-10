@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "candy.h"
-
+using namespace std;
 /// Default board dimensions
 const int DEFAULT_BOARD_WIDTH = 10;
 const int DEFAULT_BOARD_HEIGHT = 10;
@@ -39,13 +39,14 @@ public:
      */
     bool shouldExplode(int x, int y) const;
 
+
     /**
      * Explode all candies that should explode (lines of candies)
      * and then let candies above drop down to fill the gaps.
      * After dropping, repeat until no more candies can explode.
      * @return a (potentially empty) vector of all exploded candies.
      */
-    std::vector<Candy*> explodeAndDrop();
+    vector<Candy*> explodeAndDrop();
 
     /**
      * Save a serialized representation of the board to a file, which can be later loaded
@@ -87,8 +88,15 @@ public:
     /// Get the board height
     int getHeight() const;
 
+
 private:
-    Candy* cells[DEFAULT_BOARD_WIDTH][DEFAULT_BOARD_HEIGHT];
+    vector<vector<Candy*>> m_cells;
+    int m_width, m_height;
+
+    vector<Candy*> getConsecutiveColumn(int x, int y) const;
+    vector<Candy*> getConsecutiveRow(int x, int y) const;
+    vector<Candy*> getConsecutiveAscendingDiagonal(int x, int y) const;
+    vector<Candy*> getConsecutiveDescendingDiagonal(int x, int y) const;
     /// Students can add as many protected methods and attributes as needed.
 };
 
