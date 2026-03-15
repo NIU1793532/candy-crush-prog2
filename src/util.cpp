@@ -1,6 +1,64 @@
 #include "util.h"
 #include <filesystem>
 #include <iostream>
+#include <math.h>
+
+int bitsPerObject(int objectCount) {
+	return std::ceil(std::log2(objectCount));
+}
+
+std::vector<uint8_t> packToBytes(const std::vector<std::vector<Candy>>& board)
+{
+	int size = board.size() * board[0].size();
+	int bits = bitsPerObject(static_cast<int>(CandyType::COUNT));
+	int totalBytes = std::ceil((size * bits) / 8.0);
+	std::vector<uint8_t> result(totalBytes, 0);
+	uint bitPos = 0;
+
+	for (int i = 0; i < board.size(); i++)
+	{
+		for (int j = 0; j < board[i].size(); j++)
+		{
+			for (int b = 0; b < bits; b++)
+			{
+				Candy c = board[i][j];
+				int candyByte = static_cast<int>(c.getType());
+				if ((candyByte >> b) & 1u /* != 0 */)
+					result[bitPos >> 3 /* Equivalent to bitPos / 8 */] |= 1 << (bitPos % 8);
+
+				bitPos++;
+			}
+		}
+	}
+	return result;
+}
+
+std::vector<std::vector<Candy>> unpackFromBytes(const std::vector<uint8_t>& data, int width, int height)
+{
+
+	int size = width * height;
+	int bits = bitsPerObject(static_cast<int>(CandyType::COUNT));
+	std::vector result(width, std::vector<Candy>(height, Candy(CandyType::NONE)));
+	uint bitPos = 0;
+	for (int i = 0; i < size; i++)
+	{
+		int candyByte = 0;
+		for (int b = 0; b < bits; b++)
+		{
+			int currentByte = bitPos / 8;
+			int currentBit = bitPos % 8;
+			if (data[currentByte] & (1u << currentBit) /* != 0 */)
+				candyByte |= 1u << b;
+
+			bitPos++;
+		}
+		CandyType candyType = static_cast<CandyType>(candyByte);
+		result[i % width][i / width] = Candy(candyType);
+	}
+
+	return result;
+
+}
 
 std::string getDataDirPath()
 {

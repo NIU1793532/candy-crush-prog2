@@ -20,6 +20,10 @@ bool test()
         cout << "Error while testing testBoardShouldExplode()" << endl;
         return false;
     }
+	if (!testDumpLoad()) {
+		cout << "Error while testing testDumpLoad()" << endl;
+		return false;
+	}
     return true;
 }
 
@@ -130,17 +134,19 @@ bool testBoardShouldExplode()
 
 bool testDumpLoad()
 {
-    return true;
     // Test board 2D container
-    Candy c(CandyType::TYPE_ORANGE);
+    Candy c = Candy(CandyType::TYPE_ORANGE);
     Board b(10, 10);
     b.setCell(&c, 0, 0);
-    if (b.getCell(0, 0) != &c)
+	Candy c2 = Candy(CandyType::TYPE_BLUE);
+    b.setCell(&c2, 3, 3);
+
+	if (*b.getCell(0, 0) != c)
     {
         return false;
     }
 
-    // Dump and load board
+	// Dump and load board
     {
         Board b2(10, 10);
         if (!b.dump(getDataDirPath() + "dump_board.txt"))
@@ -158,6 +164,8 @@ bool testDumpLoad()
         std::filesystem::remove(getDataDirPath() + "dump_board.txt");
     }
 
+	// TODO: TEST DUMP AND LOAD GAME
+	return true;
     // Dump and load game
     {
         Game g;

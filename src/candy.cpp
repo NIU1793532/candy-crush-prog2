@@ -2,9 +2,7 @@
 #include <iostream>
 #include <string>
 
-Candy::Candy(CandyType candyType) : m_type(candyType)
-{
-}
+Candy::Candy(CandyType candyType) : m_type(candyType) {}
 
 CandyType Candy::getType() const
 {
@@ -42,4 +40,9 @@ std::string Candy::getResourceName() const
     }
 
     return candy_resource_name;
+}
+
+bool Candy::operator==(const Candy& other) const
+{
+	return getType() == other.getType();
 }

@@ -40,6 +40,8 @@ public:
     /// ready to be passed as argument to GraphicsManager::draw_image.
     std::string getResourceName() const;
 
+	bool operator==(const Candy& other) const;
+
 protected:
     /// the type of this candy instance.
     CandyType m_type;

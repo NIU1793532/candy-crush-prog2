@@ -6,11 +6,12 @@
 
 /// Imports can be added as needed.
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <fstream>
 
 #include "candy.h"
 using namespace std;
+
 /// Default board dimensions
 const int DEFAULT_BOARD_WIDTH = 10;
 const int DEFAULT_BOARD_HEIGHT = 10;
@@ -72,7 +73,7 @@ public:
      * @return a pointer to the candy at the given coordinates, 
      *   if the coordinates are valid and the cell is not empty; nullptr otherwise.
      */
-    Candy* getCell(int x, int y) const;
+    Candy* getCell(int x, int y); // TODO: Verify we can change this to const Candy* to Candy*
 
     /**
      * Set the cell at the given coordinates to the given candy.
@@ -88,15 +89,17 @@ public:
     /// Get the board height
     int getHeight() const;
 
+	bool operator==(const Board& other) const;
+
 
 private:
-    vector<vector<Candy*>> m_cells;
+    vector<vector<Candy>> m_cells;
     int m_width, m_height;
 
-    vector<Candy*> getConsecutiveColumn(int x, int y) const;
-    vector<Candy*> getConsecutiveRow(int x, int y) const;
-    vector<Candy*> getConsecutiveAscendingDiagonal(int x, int y) const;
-    vector<Candy*> getConsecutiveDescendingDiagonal(int x, int y) const;
+    vector<const Candy*> getConsecutiveColumn(int x, int y) const;
+    vector<const Candy*> getConsecutiveRow(int x, int y) const;
+    vector<const Candy*> getConsecutiveAscendingDiagonal(int x, int y) const;
+    vector<const Candy*> getConsecutiveDescendingDiagonal(int x, int y) const;
     /// Students can add as many protected methods and attributes as needed.
 };
 
