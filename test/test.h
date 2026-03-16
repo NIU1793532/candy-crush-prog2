@@ -3,3 +3,4 @@ bool test();
 bool testDumpLoad();
 bool testBoardBasics();
 bool testBoardShouldExplode();
+bool testBoardExplodeAndDrop();

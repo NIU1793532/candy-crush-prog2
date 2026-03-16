@@ -91,10 +91,13 @@ public:
 
 	bool operator==(const Board& other) const;
 
+	void print() const;
 
 private:
     vector<vector<Candy>> m_cells;
     int m_width, m_height;
+
+	vector<const Candy*> getEqualNeighbors(int x, int y) const;
 
     vector<const Candy*> getConsecutiveColumn(int x, int y) const;
     vector<const Candy*> getConsecutiveRow(int x, int y) const;

@@ -19,6 +19,20 @@ enum class CandyType
     COUNT
 };
 
+static char candySymbol(CandyType type)
+{
+	switch (type)
+	{
+		case CandyType::TYPE_RED: return 'R';
+		case CandyType::TYPE_BLUE: return 'B';
+		case CandyType::TYPE_GREEN: return 'G';
+		case CandyType::TYPE_YELLOW: return 'Y';
+		case CandyType::TYPE_PURPLE: return 'P';
+		case CandyType::TYPE_ORANGE: return 'O';
+		default: return '.';
+	}
+}
+
 /// Width of each candy image, in pixels
 const int CANDY_IMAGE_WIDTH = 47;
 /// Height of each candy image, in pixels

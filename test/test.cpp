@@ -12,16 +12,25 @@ using namespace std;
 
 bool test()
 {
-    if (!testBoardBasics()) {
+
+    if (!testBoardBasics())
+    {
         cout << "Error while testing boardBasics()" << endl;
         return false;
     }
-    if (!testBoardShouldExplode()) {
+    if (!testBoardShouldExplode())
+    {
         cout << "Error while testing testBoardShouldExplode()" << endl;
         return false;
     }
-	if (!testDumpLoad()) {
+	if (!testDumpLoad())
+	{
 		cout << "Error while testing testDumpLoad()" << endl;
+		return false;
+	}
+	if (!testBoardExplodeAndDrop())
+	{
+		cout << "Error while testing testBoardExplodeAndDrop()" << endl;
 		return false;
 	}
     return true;
@@ -187,4 +196,25 @@ bool testDumpLoad()
         std::filesystem::remove(getDataDirPath() + "dump_game.txt");
     }
     return true;
+}
+
+bool testBoardExplodeAndDrop()
+{
+	Board board(5,5);
+	board.setCell(new Candy(CandyType::TYPE_ORANGE),1,4);
+	board.setCell(new Candy(CandyType::TYPE_GREEN),2,4);
+	board.setCell(new Candy(CandyType::TYPE_ORANGE),2,3);
+	board.setCell(new Candy(CandyType::TYPE_GREEN),2,2);
+	board.setCell(new Candy(CandyType::TYPE_ORANGE),3,2);
+	board.setCell(new Candy(CandyType::TYPE_GREEN),3,3);
+	board.setCell(new Candy(CandyType::TYPE_GREEN),3,4);
+	board.setCell(new Candy(CandyType::TYPE_GREEN),3,1);
+
+	board.explodeAndDrop();
+
+	Board resultBoard(5, 5);
+	resultBoard.setCell(new Candy(CandyType::TYPE_GREEN), 2, 3);
+	resultBoard.setCell(new Candy(CandyType::TYPE_GREEN), 2, 4);
+
+	return board == resultBoard;
 }
