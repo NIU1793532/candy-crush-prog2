@@ -13,3 +13,5 @@ std::string getDataDirPath();
 std::vector<uint8_t> packToBytes(const std::vector<std::vector<Candy>>& board);
 
 std::vector<std::vector<Candy>> unpackFromBytes(const std::vector<uint8_t>& data, int width, int height);
+
+int bitsPerObject(int objectCount);

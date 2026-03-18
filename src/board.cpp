@@ -4,6 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <set>
+#include <cmath>
 
 #include "util.h"
 using namespace std;
@@ -234,9 +235,15 @@ vector<const Candy*> Board::getConsecutiveDescendingDiagonal(int x, int y) const
 bool Board::dump(const std::string& output_path) const
 {
 	// Implement your code here
-	ofstream saveFile(output_path, std::ios::binary);
+	ofstream saveFile;
+	saveFile.open(output_path, std::ios::binary);
 	vector<uint8_t> boardBytes = packToBytes(m_cells);
-	saveFile.write(reinterpret_cast<char*>(boardBytes.data()), boardBytes.size());
+
+	for (int i = 0; i < boardBytes.size(); i++)
+	{
+		saveFile << boardBytes[i];
+	}
+	saveFile.close();
 
 	return true;
 }
@@ -244,16 +251,34 @@ bool Board::dump(const std::string& output_path) const
 bool Board::load(const std::string& input_path)
 {
 	// Implement your code here
-	ifstream saveFile(input_path);
+	ifstream saveFile;
+	saveFile.open(input_path, std::ios::binary);
+	bool result = true;
 
-	saveFile.seekg(0, std::ios::end);
-	std::size_t size = saveFile.tellg();
-	saveFile.seekg(0, std::ios::beg);
-	std::vector<uint8_t> buffer(size);
+	if (saveFile.is_open())
+	{
+		std::vector<uint8_t> buffer;
+		uint8_t b;
 
-	saveFile.read(reinterpret_cast<char*>(buffer.data()), size);
-	m_cells = unpackFromBytes(buffer, m_width, m_height);
-	return true;
+		while (saveFile >> b)
+		{
+			buffer.push_back(b);
+		}
+		int expectedSize = std::ceil((m_width * m_height * bitsPerObject(static_cast<int>(CandyType::COUNT))) / 8.0);
+		if (buffer.size() == expectedSize)
+		{
+			m_cells = unpackFromBytes(buffer, m_width, m_height);
+		} else
+		{
+			result = false;
+		}
+		saveFile.close();
+	}
+	else
+	{
+		result = false;
+	}
+	return result;
 }
 
 bool Board::operator==(const Board& other) const

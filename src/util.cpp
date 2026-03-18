@@ -9,6 +9,7 @@ int bitsPerObject(int objectCount) {
 
 std::vector<uint8_t> packToBytes(const std::vector<std::vector<Candy>>& board)
 {
+
 	int size = board.size() * board[0].size();
 	int bits = bitsPerObject(static_cast<int>(CandyType::COUNT));
 	int totalBytes = std::ceil((size * bits) / 8.0);
@@ -19,10 +20,10 @@ std::vector<uint8_t> packToBytes(const std::vector<std::vector<Candy>>& board)
 	{
 		for (int j = 0; j < board[i].size(); j++)
 		{
+			Candy c = board[i][j];
+			int candyByte = static_cast<int>(c.getType());
 			for (int b = 0; b < bits; b++)
 			{
-				Candy c = board[i][j];
-				int candyByte = static_cast<int>(c.getType());
 				if ((candyByte >> b) & 1u) result[bitPos / 8] |= 1 << (bitPos % 8);
 				bitPos++;
 			}
